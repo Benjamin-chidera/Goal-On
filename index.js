@@ -5,10 +5,12 @@ const PORT = process.env.PORT || 3000;
 const cors = require("cors");
 const mongoose = require("mongoose");
 const goalRouter = require("./router/goalRouter");
+const userRouter = require("./router/userRouter");
 
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1", goalRouter);
+app.use("/api/v1", userRouter);
 
 app.get("/", (req, res) => {
   res.send("home");
