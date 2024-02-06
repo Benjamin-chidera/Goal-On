@@ -15,8 +15,16 @@ const Create = async (req, res) => {
 };
 
 const GetAll = async (req, res) => {
+  const { title } = req.query;
+
+  const queryObject = {};
+
+  if (title) {
+    queryObject.title = { $regex: title, $options: "i" };
+  }
+
   try {
-    const goal = await GOAL.find();
+    const goal = await GOAL.find(queryObject).sort("-createdAt")
     res.status(200).json({ msg: "success", NumOfGoals: goal.length, goal });
   } catch (error) {
     res.status(400).json({ ErrMsg: error.message });
@@ -47,7 +55,6 @@ const Update = async (req, res) => {
     res.status(400).json({ ErrMsg: error.message });
   }
 };
-
 
 const Delete = async (req, res) => {
   const { goalId } = req.params;
