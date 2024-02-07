@@ -15,7 +15,7 @@ const Create = async (req, res) => {
 };
 
 const GetAll = async (req, res) => {
-  const { title } = req.query;
+  const { title, type } = req.query;
 
   const queryObject = {};
 
@@ -23,8 +23,12 @@ const GetAll = async (req, res) => {
     queryObject.title = { $regex: title, $options: "i" };
   }
 
+  if (type) {
+    queryObject.type = { $regex: type, $options: "i" };
+  }
+
   try {
-    const goal = await GOAL.find(queryObject).sort("-createdAt")
+    const goal = await GOAL.find(queryObject).sort("-createdAt");
     res.status(200).json({ msg: "success", NumOfGoals: goal.length, goal });
   } catch (error) {
     res.status(400).json({ ErrMsg: error.message });
